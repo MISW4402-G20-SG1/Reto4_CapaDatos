@@ -638,6 +638,15 @@ class RemaView(TemplateView):
         elif start == None:
             start = datetime.fromtimestamp(0)
 
+        # now we set a filter for station id
+        try:
+            station_id = self.request.GET.get("station", None)
+            if station_id != None:
+                station = Station.objects.get(id=station_id)
+                locations = Location.objects.filter(station=station)
+        except:
+            print("No station filter")
+
         data = []
 
         start_ts = int(start.timestamp() * 1000000)
